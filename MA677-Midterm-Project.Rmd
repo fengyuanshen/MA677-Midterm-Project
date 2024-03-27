@@ -1,0 +1,81 @@
+---
+title: "MA677 Midterm Project"
+author: "Fengyuan(Vincent) Shen"
+date: "2024-03-28"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Order Statistics
+
+First of all, let me discusses the derivation of the probability density function for the $k^{th}$ order statistic $X_{(k)}$ of a set of $n$ independent and identically distributed continuous random variables $X_1, X_2,..., X_n$ with cumulative distribution function $F(x)$ and probability density function $p(x)$.
+
+![](images/Screenshot%202024-03-27%20at%2013.26.44.png)
+
+As is shown in the plot above, the probability density function $p_k(x)$ for the $k^{th}$ order statistic is derived by considering the probability that $k - 1$ observations fall below $x$, exactly one observation falls in the small interval $[x, x + \Delta x]$ (where $\Delta x$ is a very small positive number), and the remaining $n - k$ observations fall above $x + \Delta x$. The probability of $X_{(k)}$ falling between $x$ and $x + \Delta x$ can be approximately represented as:
+
+$$
+F_k(x + \Delta x) - F_k(x) \approx \frac{n!}{(k - 1)!(n - k)!} [F(x)]^{k-1} [F(x+\Delta x)-F(x)] [1 - F(x+\Delta x)]^{n-k}
+$$
+
+This expression considers one observation in the interval $[x, x + \Delta x]$ which is represented as $F(x+\Delta x)-F(x)$, while $F(x)$ to the power of $k - 1$ represents the $k - 1$ observations that fall below $x$, and $[1 - F(x)]$ to the power of $n - k$ represents the $n - k$ observations above $x + \Delta x$.
+
+To find the density function $p_k(x)$ of the $k^{th}$ order statistic, we divide both sides by $\Delta x$ and take the limit as $\Delta x$ approaches zero:
+
+$$
+p_k(x) = \lim_{{\Delta x \to 0}} \frac{F_k(x + \Delta x) - F_k(x)}{\Delta x}
+$$
+
+$$
+= \frac{n!}{(k - 1)!(n - k)!} [F(x)]^{k-1} [1 - F(x)]^{n-k} p(x)
+$$
+
+This function $p_k(x)$ is the probability density function of the $k^{th}$ order statistic for any continuous distribution. Furthermore, we can derive the density functions for the specific cases of the minimum and maximum order statistics within a sample of size $n$. The minimum order statistic (first order statistic) $p_1(x)$ and the maximum order statistic (nth order statistic) $p_n(x)$ have the density functions:
+
+$$
+p_1(x) = n \cdot [1 - F(x)]^{n-1} \cdot p(x)
+$$
+
+$$
+p_n(x) = n \cdot [F(x)]^{n-1} \cdot p(x)
+$$
+
+```{r}
+set.seed(123) # For reproducibility
+
+# Simulation parameters
+n_samples <- 10000
+sample_size <- 5
+
+# Uniform distribution parameters
+a <- 0
+b <- 1
+
+# Exponential distribution parameter
+lambda_exp <- 1
+
+# Normal distribution parameters
+mu <- 0
+sigma <- 1
+
+# Simulate samples
+uniform_samples <- matrix(runif(n_samples * sample_size, a, b), nrow = n_samples)
+exponential_samples <- matrix(rexp(n_samples * sample_size, lambda_exp), nrow = n_samples)
+normal_samples <- matrix(rnorm(n_samples * sample_size, mu, sigma), nrow = n_samples)
+
+# Function to calculate order statistics
+calc_order_stats <- function(samples) {
+  apply(samples, 1, quantile, probs = c(0, 0.25, 0.5, 0.75, 1))
+}
+
+# Compute order statistics
+uniform_order_stats <- t(calc_order_stats(uniform_samples))
+exponential_order_stats <- t(calc_order_stats(exponential_samples))
+normal_order_stats <- t(calc_order_stats(normal_samples))
+
+# Optionally, you can view the results for one of the distributions
+head(uniform_order_stats)
+```
