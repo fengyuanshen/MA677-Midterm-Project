@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 ```
 
-# Order Statistics
+# 1. Order Statistics
 
 First of all, let me discuss the derivation of the probability density function for the $k^{th}$ order statistic $X_{(k)}$ of a set of $n$ independent and identically distributed continuous random variables $X_1, X_2,..., X_n$ with cumulative distribution function $F(x)$ and probability density function $p(x)$.
 
@@ -590,7 +590,7 @@ The spread of each histogram also widens from the minimum to the maximum statist
 
 The empirical data closely match the overlaid theoretical curves, underscoring the consistency of the simulation with the expected behavior of order statistics for the standard normal distribution.
 
-# Exponential Distribution
+# 2. Exponential Distribution
 
 ## Derive CDF and MGF
 
