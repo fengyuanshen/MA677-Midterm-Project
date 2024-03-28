@@ -1,6 +1,6 @@
 ---
 title: "MA677 Midterm Project"
-author: "Fengyuan(Vincent) Shen"
+author: "Fengyuan (Vincent) Shen"
 date: "2024-03-28"
 output: pdf_document
 ---
@@ -647,7 +647,7 @@ $$
 Evaluating this derivative at $t=0$ gives the mean:
 
 $$
-E(x) = \left. \frac{\lambda}{(\lambda - t)^2} \right|_{t=0} = \frac{\lambda}{\lambda^2} = \frac{1}{\lambda}
+E(x) = \mu = \left. \frac{\lambda}{(\lambda - t)^2} \right|_{t=0} = \frac{\lambda}{\lambda^2} = \frac{1}{\lambda}
 $$
 
 The second derivative of the MGF with respect to $t$ gives the second moment of the distribution:
@@ -665,7 +665,117 @@ $$
 The variance can be calculated by subtracting the square of the mean from the second moment:
 
 $$
-Var(x) = E(x^2) - [E(x)]^2 = \frac{2}{\lambda^2} - \left(\frac{1}{\lambda}\right)^2 = \frac{2}{\lambda^2} - \frac{1}{\lambda^2} = \frac{1}{\lambda^2}
+Var(x) = \sigma^2 = E(x^2) - [E(x)]^2 = \frac{2}{\lambda^2} - \left(\frac{1}{\lambda}\right)^2 = \frac{2}{\lambda^2} - \frac{1}{\lambda^2} = \frac{1}{\lambda^2}
 $$
 
-## Third, Fourth, and Fifth Moments
+## Central Moments About the Mean
+
+### **Third Moment About the Mean (**$\mu_3$)
+
+Given the MGF and mean of the exponential distribution:
+
+$$
+M(t) = \frac{\lambda}{\lambda - t}, E(x) = \mu =\frac{1}{\lambda}
+$$
+
+The third moment about the mean is:
+
+$$
+\mu_3 = E[(X - \mu)^3] = \int_{0}^{\infty} (x - \mu)^3 f(x; \lambda) \, dx = \int_{0}^{\infty} (x - \frac{1}{\lambda})^3 \lambda e^{-\lambda x} \, dx
+$$
+
+Expand it:
+
+$$
+\int_{0}^{\infty} (x - \frac{1}{\lambda})^3 \lambda e^{-\lambda x} \, dx = \int_{0}^{\infty} [x^3 - 3x^2(\frac{1}{\lambda}) + 3x(\frac{1}{\lambda})^2 - (\frac{1}{\lambda})^3] \lambda e^{-\lambda x} \, dx
+$$
+
+Thus, I need to integrate each term of:
+
+$$
+\lambda x^3 e^{-\lambda x} - 3\lambda (\frac{1}{\lambda}) x^2 e^{-\lambda x} + 3\lambda (\frac{1}{\lambda})^2 x e^{-\lambda x} - \lambda (\frac{1}{\lambda})^3 e^{-\lambda x}
+$$
+
+Given that:
+
+$$
+\int_{0}^{\infty} x^n e^{-\lambda x} \, dx = \frac{n!}{\lambda^{n+1}}
+$$
+
+Therefore,
+
+$$
+\mu_3 = E[(X - \mu)^3] = \int_{0}^{\infty} (x - \frac{1}{\lambda})^3 \lambda e^{-\lambda x} \, dx = \frac{6}{\lambda^3} - \frac{6}{\lambda^3} + \frac{3}{\lambda^3} - \frac{1}{\lambda^3} = \frac{2}{\lambda^2}
+$$
+
+**The third moment about the mean (**$\mu_3$**) represents the skewness of the distribution, which measures the asymmetry of the distribution around its mean. For the exponential distribution, the skewness is positive (**$\mu_3>0$**), indicating that the distribution is right-skewed.**
+
+### **Fourth Moment About the Mean (**$\mu_4$)
+
+The fourth moment about the mean is:
+
+$$
+\mu_4 = E[(X - \mu)^4] = \int_{0}^{\infty} (x - \mu)^4 f(x; \lambda) \, dx = \int_{0}^{\infty} (x - \frac{1}{\lambda})^4 \lambda e^{-\lambda x} \, dx
+$$
+
+Expand it:
+
+$$
+\int_{0}^{\infty} (x - \frac{1}{\lambda})^4 \lambda e^{-\lambda x} \, dx = \int_{0}^{\infty} [x^4 - 4x^3\left(\frac{1}{\lambda}\right) + 6x^2\left(\frac{1}{\lambda}\right)^2 - 4x\left(\frac{1}{\lambda}\right)^3 + \left(\frac{1}{\lambda}\right)^4] \lambda e^{-\lambda x} \, dx
+$$
+
+Thus, I need to integrate each term of:
+
+$$
+x^4\lambda e^{-\lambda x} - 4x^3\left(\frac{1}{\lambda}\right) \lambda e^{-\lambda x} + 6x^2\left(\frac{1}{\lambda}\right)^2 \lambda e^{-\lambda x} - 4x\left(\frac{1}{\lambda}\right)^3 \lambda e^{-\lambda x} + \left(\frac{1}{\lambda}\right)^4 \lambda e^{-\lambda x}
+$$
+
+Given that:
+
+$$
+\int_{0}^{\infty} x^n e^{-\lambda x} \, dx = \frac{n!}{\lambda^{n+1}}
+$$
+
+Same as above,
+
+$$
+\mu_4 = E[(X - \mu)^4] = \int_{0}^{\infty} (x - \frac{1}{\lambda})^4 \lambda e^{-\lambda x} \, dx = \frac{24}{\lambda^4} - \frac{24}{\lambda^4} + \frac{12}{\lambda^4} - \frac{4}{\lambda^4} + \frac{1}{\lambda^4} = \frac{9}{\lambda^4}
+$$
+
+**The fourth moment about the mean (**$\mu_4$**) relates to the kurtosis of the distribution, which measures the "tailedness" or the peak of the distribution. For the exponential distribution, the kurtosis is higher than that of a normal distribution, indicating a more pronounced peak and heavier tails.**
+
+### **Fifth Moment About the Mean (**$\mu_5$)
+
+The fifth moment about the mean is:
+
+$$
+\mu_5 = E[(X - \mu)^5] = \int_{0}^{\infty} (x - \mu)^5 f(x; \lambda) \, dx = \int_{0}^{\infty} (x - \frac{1}{\lambda})^5 \lambda e^{-\lambda x} \, dx
+$$
+
+Expand it:
+
+$$
+\int_{0}^{\infty} (x - \frac{1}{\lambda})^5 \lambda e^{-\lambda x} \, dx = \int_{0}^{\infty} [x^5 - 5x^4\left(\frac{1}{\lambda}\right) + 10x^3\left(\frac{1}{\lambda}\right)^2 - 10x^2\left(\frac{1}{\lambda}\right)^3 + 5x\left(\frac{1}{\lambda}\right)^4 - \left(\frac{1}{\lambda}\right)^5] \lambda e^{-\lambda x} \, dx
+$$
+
+Thus, I need to integrate each term of:
+
+$$
+x^5 \lambda e^{-\lambda x} - 5x^4\left(\frac{1}{\lambda}\right) \lambda e^{-\lambda x} + 10x^3\left(\frac{1}{\lambda}\right)^2 \lambda e^{-\lambda x} - 10x^2\left(\frac{1}{\lambda}\right)^3 \lambda e^{-\lambda x} + 5x\left(\frac{1}{\lambda}\right)^4 \lambda e^{-\lambda x} - \left(\frac{1}{\lambda}\right)^5 \lambda e^{-\lambda x}
+$$
+
+Given that:
+
+$$
+\int_{0}^{\infty} x^n e^{-\lambda x} \, dx = \frac{n!}{\lambda^{n+1}}
+$$
+
+Same as above,
+
+$$
+\mu_5 = E[(X - \mu)^5] = \int_{0}^{\infty} (x - \frac{1}{\lambda})^5 \lambda e^{-\lambda x} \, dx = \frac{120}{\lambda^5} - \frac{120}{\lambda^5} + \frac{60}{\lambda^5} - \frac{20}{\lambda^5} + \frac{5}{\lambda^5} - \frac{1}{\lambda^5} = \frac{44}{\lambda^5}
+$$
+
+**The fifth moment about the mean (**$\mu_5$**) provide additional shape characteristics of the distribution, especially regarding its asymmetry and the behavior of its tails.**
+
+## **Relation to Other Distributions**
