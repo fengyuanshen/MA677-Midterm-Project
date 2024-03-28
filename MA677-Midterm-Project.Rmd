@@ -670,7 +670,7 @@ $$
 
 ## Central Moments About the Mean
 
-### **Third Moment About the Mean (**$\mu_3$)
+### Third Moment About the Mean ($\mu_3$)
 
 Given the MGF and mean of the exponential distribution:
 
@@ -710,7 +710,7 @@ $$
 
 **The third moment about the mean (**$\mu_3$**) represents the skewness of the distribution, which measures the asymmetry of the distribution around its mean. For the exponential distribution, the skewness is positive (**$\mu_3>0$**), indicating that the distribution is right-skewed.**
 
-### **Fourth Moment About the Mean (**$\mu_4$)
+### Fourth Moment About the Mean ($\mu_4$)
 
 The fourth moment about the mean is:
 
@@ -744,7 +744,7 @@ $$
 
 **The fourth moment about the mean (**$\mu_4$**) relates to the kurtosis of the distribution, which measures the "tailedness" or the peak of the distribution. For the exponential distribution, the kurtosis is higher than that of a normal distribution, indicating a more pronounced peak and heavier tails.**
 
-### **Fifth Moment About the Mean (**$\mu_5$)
+### Fifth Moment About the Mean ($\mu_5$)
 
 The fifth moment about the mean is:
 
@@ -778,4 +778,34 @@ $$
 
 **The fifth moment about the mean (**$\mu_5$**) provide additional shape characteristics of the distribution, especially regarding its asymmetry and the behavior of its tails.**
 
-## **Relation to Other Distributions**
+## Relation to Other Distributions
+
+The exponential distribution is closely related to the gamma distribution. To be more specific, when considering the sum of independent exponential variables, the resulting distribution is a gamma distribution. As a matter of fact, the exponential distribution is a special case of the gamma distribution with shape parameter $k=1$.
+
+$$
+Gamma(1,\lambda) = Exp(\lambda)
+$$
+
+To prove that, considering the MGF of an exponential distribution with rate parameter $\lambda$ and the MGF of a gamma distribution with shape $k$ and rate $\lambda$ (or scale $\theta=1/\lambda$):
+
+$$
+M_{\text{exp}}(t) = \frac{\lambda}{\lambda - t}, \quad \text{for } t < \lambda
+$$
+
+$$
+M_{\text{gamma}}(t) = \mathbb{E}[e^{tx}] = \frac{\lambda^\alpha}{\Gamma(\alpha)} \int_0^\infty e^{xt} x^{\alpha-1} e^{-\lambda x} dx = \left(1 - \theta t\right)^{-k} = \left(\frac{\lambda}{\lambda - t}\right)^k, \quad \text{for } t < \lambda
+$$
+
+For $k$ independent exponential random variables $X_1, X_2, ..., X_k$ each with rate $\lambda$, the MGF of their sum is the product of their each MGF:
+
+$$
+M_{\text{sum}}(t) = \left(M_{\text{exp}}(t)\right)^k = \left(\frac{\lambda}{\lambda - t}\right)^k = M_{\text{gamma}}(t)
+$$
+
+This MGF corresponds to that of a gamma distribution with parameters $k$ and $\lambda$, demonstrating that the sum of $k$ independent exponential random variables with rate $\lambda$ follows a gamma distribution:
+
+$$
+\sum_{i=1}^k Exp(\lambda) = Exp(\lambda) + Exp(\lambda) + ... + Exp(\lambda) = Gamma(k,\lambda)
+$$
+
+# 3. Irrigation — Those Green Circles
