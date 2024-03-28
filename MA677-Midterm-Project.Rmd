@@ -10,9 +10,9 @@ knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 ```
 
-## Order Statistics
+# Order Statistics
 
-First of all, let me discusses the derivation of the probability density function for the $k^{th}$ order statistic $X_{(k)}$ of a set of $n$ independent and identically distributed continuous random variables $X_1, X_2,..., X_n$ with cumulative distribution function $F(x)$ and probability density function $p(x)$.
+First of all, let me discuss the derivation of the probability density function for the $k^{th}$ order statistic $X_{(k)}$ of a set of $n$ independent and identically distributed continuous random variables $X_1, X_2,..., X_n$ with cumulative distribution function $F(x)$ and probability density function $p(x)$.
 
 ![](images/Screenshot%202024-03-27%20at%2013.26.44.png)
 
@@ -27,10 +27,7 @@ This expression considers one observation in the interval $[x, x + \Delta x]$ wh
 To find the density function $p_k(x)$ of the $k^{th}$ order statistic, we divide both sides by $\Delta x$ and take the limit as $\Delta x$ approaches zero:
 
 $$
-\begin{align}
-p_k(x) &= \lim_{{\Delta x \to 0}} \frac{F_k(x + \Delta x) - F_k(x)}{\Delta x} \\
-&= \frac{n!}{(k - 1)!(n - k)!} [F(x)]^{k-1} [1 - F(x)]^{n-k} p(x)
-\end{align}
+p_k(x) = \lim_{{\Delta x \to 0}} \frac{F_k(x + \Delta x) - F_k(x)}{\Delta x} = \frac{n!}{(k - 1)!(n - k)!} [F(x)]^{k-1} [1 - F(x)]^{n-k} p(x)
 $$
 
 This function $p_k(x)$ is the probability density function of the $k^{th}$ order statistic for any continuous distribution. Furthermore, we can derive the density functions for the specific cases of the minimum and maximum order statistics within a sample of size $n$. The minimum order statistic (first order statistic) $p_1(x)$ and the maximum order statistic (nth order statistic) $p_n(x)$ have the density functions:
@@ -43,7 +40,7 @@ $$
 p_n(x) = n \cdot [F(x)]^{n-1} \cdot p(x)
 $$
 
-### Uniform Distribution
+## Uniform Distribution
 
 The PDF and CDF for a uniform distribution $U(0,1)$ are given by:
 
@@ -78,7 +75,7 @@ $$
 E(x_{(k)})=\frac{k}{n+1}
 $$
 
-#### Minimum Order Statistic
+### Minimum Order Statistic
 
 The PDF for the minimum order statistic $X_{(1)}$:
 
@@ -107,7 +104,7 @@ ggplot(data_min, aes(x = value)) +
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-#### Second Order Statistic
+### Second Order Statistic
 
 The PDF for the second order statistic $X_{(2)}$:
 
@@ -136,7 +133,7 @@ ggplot(data_sec, aes(x = value)) +
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-#### Third Order Statistic
+### Third Order Statistic
 
 The PDF for the third order statistic $X_{(3)}$:
 
@@ -165,7 +162,7 @@ ggplot(data_third, aes(x = value)) +
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-#### Fourth Order Statistic
+### Fourth Order Statistic
 
 The PDF for the fourth order statistic $X_{(4)}$:
 
@@ -194,7 +191,7 @@ ggplot(data_fourth, aes(x = value)) +
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-#### Fifth Order Statistic
+### Fifth Order Statistic
 
 The PDF for the maximum order statistic $X_{(5)}$:
 
@@ -229,7 +226,7 @@ To be more specific, the PDF for the minimum order statistic $X_{(1)}$ is equiva
 
 The match between the histograms (empirical distribution) and the overlaid Beta distribution (theoretical distribution) appears to be quite good.
 
-### Exponential Distribution
+## Exponential Distribution
 
 For an exponential distribution with rate $\lambda$, the PDF and CDF are:
 
@@ -245,7 +242,7 @@ $$
 p_k(x) = \frac{n!}{(k - 1)!(n - k)!} (\lambda e^{-\lambda x}) \left(1 - e^{-\lambda x}\right)^{k-1} \left(e^{-\lambda x}\right)^{n-k}
 $$
 
-#### Minimum Order Statistic
+### Minimum Order Statistic
 
 Here, I choose $\lambda=1$ for better demonstration.
 
@@ -279,7 +276,7 @@ ggplot(data_min, aes(x = value)) +
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-#### Second Order Statistic
+### Second Order Statistic
 
 The PDF for the second order statistic $X_{(2)}$:
 
@@ -311,7 +308,7 @@ ggplot(data_sec, aes(x = value)) +
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-#### Third Order Statistic
+### Third Order Statistic
 
 The PDF for the third order statistic $X_{(3)}$:
 
@@ -343,7 +340,7 @@ ggplot(data_third, aes(x = value)) +
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-#### Fourth Order Statistic
+### Fourth Order Statistic
 
 The PDF for the fourth order statistic $X_{(4)}$:
 
@@ -375,7 +372,7 @@ ggplot(data_fourth, aes(x = value)) +
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-#### Fifth Order Statistic
+### Fifth Order Statistic
 
 The PDF for the maximum order statistic $X_{(5)}$:
 
@@ -411,7 +408,7 @@ The minimum order statistic from $Exp(1)$ has the highest density near zero and 
 
 Overall, the histograms for the order statistics from an exponential distribution exhibit a clear pattern that is consistent with the curve on each plot indicating underlying theoretical distribution.
 
-### Normal Distributions
+## Normal Distributions
 
 For the $k^{th}$ order statistic from a normal distribution $N(\mu, \sigma^2)$, the PDF can be approximated by:
 
@@ -421,7 +418,7 @@ $$
 
 where $\phi$ is the standard normal PDF, and $\Phi$ is the standard normal CDF.
 
-#### Minimum Order Statistic
+### Minimum Order Statistic
 
 Here, I choose $\mu=0$ and $\sigma=1$ for better demonstration. So the normal distribution becomes standard normal distribution $N(0,1)$, and the PDF of $k^{th}$ order statistic becomes:
 
@@ -459,7 +456,7 @@ ggplot(data_min, aes(x = value)) +
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-#### Second Order Statistic
+### Second Order Statistic
 
 The PDF for the second order statistic $X_{(2)}$:
 
@@ -491,7 +488,7 @@ ggplot(data_sec, aes(x = value)) +
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-#### Third Order Statistic
+### Third Order Statistic
 
 The PDF for the third order statistic $X_{(3)}$:
 
@@ -523,7 +520,7 @@ ggplot(data_third, aes(x = value)) +
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-#### Fourth Order Statistic
+### Fourth Order Statistic
 
 The PDF for the fourth order statistic $X_{(4)}$:
 
@@ -555,7 +552,7 @@ ggplot(data_fourth, aes(x = value)) +
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-#### Fifth Order Statistic
+### Fifth Order Statistic
 
 The PDF for the maximum order statistic $X_{(5)}$:
 
@@ -586,3 +583,89 @@ ggplot(data_fifth, aes(x = value)) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5))
 ```
+
+The histograms for the order statistics from a standard normal distribution exhibit a clear progression in their peak locations, with the minimum being the farthest left and each subsequent statistic moving rightward towards the maximum. This shift corresponds to increasing values within the distribution.
+
+The spread of each histogram also widens from the minimum to the maximum statistic, reflecting the greater variability as one moves through the order statistics.
+
+The empirical data closely match the overlaid theoretical curves, underscoring the consistency of the simulation with the expected behavior of order statistics for the standard normal distribution.
+
+# Exponential Distribution
+
+## Derive CDF and MGF
+
+The Probability Density Function (PDF) of the exponential distribution is given by:
+
+$$
+f(x; \lambda) = \lambda e^{-\lambda x}, \quad \text{for } x \ge 0
+$$
+
+where $\lambda$ is the rate parameter of the distribution.
+
+The CDF is derived by integrating the PDF from $0$ to $x$. So: $$
+F(x; \lambda) = \int_{0}^{x} \lambda e^{-\lambda t} \, dt = \left (-e^{-\lambda t}) \right |_{0}^{x} = -(e^{-\lambda x} - e^{-\lambda \cdot 0}) = 1 - e^{-\lambda x}
+$$
+
+Thus, the CDF is:
+
+$$
+F(x; \lambda) = 1 - e^{-\lambda x}, \quad \text{for } x \ge 0
+$$
+
+The MGF is defined by the expectation of $e^{tx}$ over the distribution. The MGF of the exponential distribution is given by:
+
+$$
+M(t) = \mathbb{E}[e^{tx}] = \int_{0}^{\infty} e^{tx} \lambda e^{-\lambda x} \, dx = \lambda \int_{0}^{\infty} e^{x(t - \lambda)} \, dx
+$$
+
+Assuming $t < \lambda$ to ensure the integral converges:
+
+$$
+M(t) = \lambda \left. (\frac{e^{x(t - \lambda)}}{t - \lambda}) \right |_{0}^{\infty} = \frac{\lambda}{\lambda - t}, 
+$$
+
+Therefore, the MGF is:
+
+$$
+M(t) = \frac{\lambda}{\lambda - t}, \quad \text{for } t < \lambda
+$$
+
+## Verify Mean and Variance with MGF
+
+Given the MGF of the exponential distribution:
+
+$$
+M(t) = \frac{\lambda}{\lambda - t}
+$$
+
+The first derivative of the MGF with respect to $t$ gives the first moment of the distribution:
+
+$$
+\frac{dM(t)}{dt} = \frac{\lambda}{(\lambda - t)^2}
+$$
+
+Evaluating this derivative at $t=0$ gives the mean:
+
+$$
+E(x) = \left. \frac{\lambda}{(\lambda - t)^2} \right|_{t=0} = \frac{\lambda}{\lambda^2} = \frac{1}{\lambda}
+$$
+
+The second derivative of the MGF with respect to $t$ gives the second moment of the distribution:
+
+$$
+\frac{d^2M(t)}{dt^2} = \frac{2\lambda}{(\lambda - t)^3}
+$$
+
+Evaluating this derivative at $t=0$ gives the second moment about the origin:
+
+$$
+E(x^2) = \left. \frac{2\lambda}{(\lambda - t)^3} \right|_{t=0} = \frac{2\lambda}{\lambda^3} = \frac{2}{\lambda^2}
+$$
+
+The variance can be calculated by subtracting the square of the mean from the second moment:
+
+$$
+Var(x) = E(x^2) - [E(x)]^2 = \frac{2}{\lambda^2} - \left(\frac{1}{\lambda}\right)^2 = \frac{2}{\lambda^2} - \frac{1}{\lambda^2} = \frac{1}{\lambda^2}
+$$
+
+## Third, Fourth, and Fifth Moments
