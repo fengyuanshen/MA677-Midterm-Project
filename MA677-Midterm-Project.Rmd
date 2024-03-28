@@ -7,6 +7,7 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
 ```
 
 ## Order Statistics
@@ -26,11 +27,10 @@ This expression considers one observation in the interval $[x, x + \Delta x]$ wh
 To find the density function $p_k(x)$ of the $k^{th}$ order statistic, we divide both sides by $\Delta x$ and take the limit as $\Delta x$ approaches zero:
 
 $$
-p_k(x) = \lim_{{\Delta x \to 0}} \frac{F_k(x + \Delta x) - F_k(x)}{\Delta x}
-$$
-
-$$
-= \frac{n!}{(k - 1)!(n - k)!} [F(x)]^{k-1} [1 - F(x)]^{n-k} p(x)
+\begin{align}
+p_k(x) &= \lim_{{\Delta x \to 0}} \frac{F_k(x + \Delta x) - F_k(x)}{\Delta x} \\
+&= \frac{n!}{(k - 1)!(n - k)!} [F(x)]^{k-1} [1 - F(x)]^{n-k} p(x)
+\end{align}
 $$
 
 This function $p_k(x)$ is the probability density function of the $k^{th}$ order statistic for any continuous distribution. Furthermore, we can derive the density functions for the specific cases of the minimum and maximum order statistics within a sample of size $n$. The minimum order statistic (first order statistic) $p_1(x)$ and the maximum order statistic (nth order statistic) $p_n(x)$ have the density functions:
@@ -43,39 +43,546 @@ $$
 p_n(x) = n \cdot [F(x)]^{n-1} \cdot p(x)
 $$
 
-```{r}
-set.seed(123) # For reproducibility
+### Uniform Distribution
 
-# Simulation parameters
+The PDF and CDF for a uniform distribution $U(0,1)$ are given by:
+
+$$
+p(x) = 
+\begin{cases}
+1, & \text{for } 0 \le x \le 1 \\
+0, & \text{otherwise}
+\end{cases}
+$$
+
+$$
+F(x) = 
+\begin{cases}
+0, & \text{for } x < 0 \\
+x, & \text{for } 0 \le x \le 1 \\
+1, & \text{for } x > 1
+\end{cases}
+$$
+
+Therefore, the PDF for the $k^{th}$ order statistic $X_{(k)}$ from a uniform distribution is given by: $$
+p_k(x) = \frac{n!}{(k - 1)!(n - k)!} x^{k-1} (1 - x)^{n-k} \text{ , for } 0 \le x \le 1
+$$
+
+This is equivalent to a Beta distribution with parameters $\alpha=k$ and $\beta=n-k+1$, that is:
+
+$$
+Beta(k,n-k+1)
+$$
+
+$$
+E(x_{(k)})=\frac{k}{n+1}
+$$
+
+#### Minimum Order Statistic
+
+The PDF for the minimum order statistic $X_{(1)}$:
+
+$$
+p_1(x) = 5 (1 - x)^{4}
+$$
+
+```{r echo=FALSE}
+# Simulate samples from uniform distribution
+set.seed(1)
 n_samples <- 10000
-sample_size <- 5
+samples <- matrix(runif(n_samples * 5), ncol = 5)
 
-# Uniform distribution parameters
-a <- 0
-b <- 1
+# Calculate the minimum order statistic
+min_vals <- apply(samples, 1, min)
+data_min <- data.frame(value = min_vals)
 
-# Exponential distribution parameter
-lambda_exp <- 1
+# Plot
+ggplot(data_min, aes(x = value)) +
+  geom_histogram(aes(y = after_stat(density)), binwidth = 0.01, fill = "#669BBC", color = "black") +
+  stat_function(fun = function(x) { dbeta(x, 1, 5) }, color = "#C1121F", linewidth = 1) +
+  labs(title = "Density of Minimum Order Statistic from Uniform Distribution",
+       x = "Value",
+       y = "Density") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
 
-# Normal distribution parameters
-mu <- 0
-sigma <- 1
+#### Second Order Statistic
 
-# Simulate samples
-uniform_samples <- matrix(runif(n_samples * sample_size, a, b), nrow = n_samples)
-exponential_samples <- matrix(rexp(n_samples * sample_size, lambda_exp), nrow = n_samples)
-normal_samples <- matrix(rnorm(n_samples * sample_size, mu, sigma), nrow = n_samples)
+The PDF for the second order statistic $X_{(2)}$:
 
-# Function to calculate order statistics
-calc_order_stats <- function(samples) {
-  apply(samples, 1, quantile, probs = c(0, 0.25, 0.5, 0.75, 1))
-}
+$$
+p_2(x) = 20 x (1 - x)^{3}
+$$
 
-# Compute order statistics
-uniform_order_stats <- t(calc_order_stats(uniform_samples))
-exponential_order_stats <- t(calc_order_stats(exponential_samples))
-normal_order_stats <- t(calc_order_stats(normal_samples))
+```{r echo=FALSE}
+# Simulate samples from uniform distribution
+set.seed(1)
+n_samples <- 10000
+samples <- matrix(runif(n_samples * 5), ncol = 5)
 
-# Optionally, you can view the results for one of the distributions
-head(uniform_order_stats)
+# Calculate the second order statistic
+sec_vals <- apply(samples, 1, function(x) sort(x)[2])
+data_sec <- data.frame(value = sec_vals)
+
+# Plot
+ggplot(data_sec, aes(x = value)) +
+  geom_histogram(aes(y = after_stat(density)), binwidth = 0.01, fill = "#FFD60A", color = "black") +
+  stat_function(fun = function(x) { dbeta(x, 2, 4) }, color = "#003566", linewidth = 1) +
+  labs(title = "Density of Second Order Statistic from Uniform Distribution",
+       x = "Value",
+       y = "Density") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+#### Third Order Statistic
+
+The PDF for the third order statistic $X_{(3)}$:
+
+$$
+p_3(x) = 30 x^2 (1 - x)^{2}
+$$
+
+```{r echo=FALSE}
+# Simulate samples from uniform distribution
+set.seed(1)
+n_samples <- 10000
+samples <- matrix(runif(n_samples * 5), ncol = 5)
+
+# Calculate the third order statistic
+third_vals <- apply(samples, 1, function(x) sort(x)[3])
+data_third <- data.frame(value = third_vals)
+
+# Plot
+ggplot(data_third, aes(x = value)) +
+  geom_histogram(aes(y = after_stat(density)), binwidth = 0.01, fill = "#606C38", color = "black") +
+  stat_function(fun = function(x) { dbeta(x, 3, 3) }, color = "#F77F00", linewidth = 1) +
+  labs(title = "Density of Third Order Statistic from Uniform Distribution",
+       x = "Value",
+       y = "Density") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+#### Fourth Order Statistic
+
+The PDF for the fourth order statistic $X_{(4)}$:
+
+$$
+p_4(x) = 20 x^3 (1 - x)
+$$
+
+```{r echo=FALSE}
+# Simulate samples from uniform distribution
+set.seed(1)
+n_samples <- 10000
+samples <- matrix(runif(n_samples * 5), ncol = 5)
+
+# Calculate the fourth order statistic
+fourth_vals <- apply(samples, 1, function(x) sort(x)[4])
+data_fourth <- data.frame(value = fourth_vals)
+
+# Plot
+ggplot(data_fourth, aes(x = value)) +
+  geom_histogram(aes(y = after_stat(density)), binwidth = 0.01, fill = "#BC6C25", color = "black") +
+  stat_function(fun = function(x) { dbeta(x, 4, 2) }, color = "#283618", linewidth = 1) +
+  labs(title = "Density of Fourth Order Statistic from Uniform Distribution",
+       x = "Value",
+       y = "Density") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+#### Fifth Order Statistic
+
+The PDF for the maximum order statistic $X_{(5)}$:
+
+$$
+p_5(x) = 5 x^{4}
+$$
+
+```{r echo=FALSE}
+# Simulate samples from uniform distribution
+set.seed(1)
+n_samples <- 10000
+samples <- matrix(runif(n_samples * 5), ncol = 5)
+
+# Calculate the fifth order statistic
+fifth_vals <- apply(samples, 1, function(x) sort(x)[5])
+data_fifth <- data.frame(value = fifth_vals)
+
+# Plot
+ggplot(data_fifth, aes(x = value)) +
+  geom_histogram(aes(y = after_stat(density)), binwidth = 0.01, fill = "#D90429", color = "black") +
+  stat_function(fun = function(x) { dbeta(x, 5, 1) }, color = "#2B2D42", linewidth = 1) +
+  labs(title = "Density of Fifth Order Statistic from Uniform Distribution",
+       x = "Value",
+       y = "Density") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+From the plots provided, each histogram corresponds to one of the five order statistics derived from a uniform distribution $U(0,1)$, with a sample size of $n=5$. The curve on each plot represents the theoretical Beta distribution that matches the order statistic being depicted.
+
+To be more specific, the PDF for the minimum order statistic $X_{(1)}$ is equivalent to $Beta(1,5)$. The PDF for the second order statistic $X_{(2)}$ is equivalent to $Beta(2,4)$. The PDF for the third order statistic $X_{(3)}$ is equivalent to $Beta(3,3)$. The PDF for the fourth order statistic $X_{(4)}$ is equivalent to $Beta(4,2)$. The PDF for the maximum order statistic $X_{(5)}$ is equivalent to $Beta(5,1)$.
+
+The match between the histograms (empirical distribution) and the overlaid Beta distribution (theoretical distribution) appears to be quite good.
+
+### Exponential Distribution
+
+For an exponential distribution with rate $\lambda$, the PDF and CDF are:
+
+$$
+p(x) = \lambda e^{-\lambda x}, \text{ for } x \ge 0
+$$
+
+$$
+F(x) = 1 - e^{-\lambda x}, \text{ for } x \ge 0
+$$ The PDF for the $k^{th}$ order statistic from an exponential distribution is:
+
+$$
+p_k(x) = \frac{n!}{(k - 1)!(n - k)!} (\lambda e^{-\lambda x}) \left(1 - e^{-\lambda x}\right)^{k-1} \left(e^{-\lambda x}\right)^{n-k}
+$$
+
+#### Minimum Order Statistic
+
+Here, I choose $\lambda=1$ for better demonstration.
+
+The PDF for the minimum order statistic $X_{(1)}$:
+
+$$
+p_1(x) = 5 e^{-5x}
+$$
+
+```{r echo=FALSE}
+# Simulate samples from exponential distribution
+set.seed(1)
+n_samples <- 10000
+samples <- matrix(rexp(n_samples * 5), ncol = 5)
+
+# Calculate the minimum order statistic
+min_vals <- apply(samples, 1, min)
+data_min <- data.frame(value = min_vals)
+
+# Theoretical density
+theoretical_density <- function(x) { 5 * exp(-5 * x) }
+
+# Plot
+ggplot(data_min, aes(x = value)) +
+  geom_histogram(aes(y = after_stat(density)), binwidth = 0.02, fill = "#669BBC", color = "black") +
+  stat_function(fun = theoretical_density, color = "#C1121F", linewidth = 1) +
+  labs(title = "Density of Minimum Order Statistic from Exponential Distribution",
+       x = "Value",
+       y = "Density") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+#### Second Order Statistic
+
+The PDF for the second order statistic $X_{(2)}$:
+
+$$
+p_2(x) = 20 (1 - e^{-x}) e^{-4x}
+$$
+
+```{r echo=FALSE}
+# Simulate samples from exponential distribution
+set.seed(1)
+n_samples <- 10000
+samples <- matrix(rexp(n_samples * 5), ncol = 5)
+
+# Calculate the second order statistic
+sec_vals <- apply(samples, 1, function(x) sort(x)[2])
+data_sec <- data.frame(value = sec_vals)
+
+# Theoretical density
+theoretical_density <- function(x) { 20 * exp(-4 * x) * (1 - exp(-x)) }
+
+# Plot
+ggplot(data_sec, aes(x = value)) +
+  geom_histogram(aes(y = after_stat(density)), binwidth = 0.03, fill = "#FFD60A", color = "black") +
+  stat_function(fun = theoretical_density, color = "#003566", linewidth = 1) +
+  labs(title = "Density of Second Order Statistic from Exponential Distribution",
+       x = "Value",
+       y = "Density") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+#### Third Order Statistic
+
+The PDF for the third order statistic $X_{(3)}$:
+
+$$
+p_3(x) = 30 (1 - e^{-x})^2 e^{-3x}
+$$
+
+```{r echo=FALSE}
+# Simulate samples from exponential distribution
+set.seed(1)
+n_samples <- 10000
+samples <- matrix(rexp(n_samples * 5), ncol = 5)
+
+# Calculate the third order statistic
+third_vals <- apply(samples, 1, function(x) sort(x)[3])
+data_third <- data.frame(value = third_vals)
+
+# Theoretical density
+theoretical_density <- function(x) { 30 * exp(-3 * x) * (1 - exp(-x))^2 }
+
+# Plot
+ggplot(data_third, aes(x = value)) +
+  geom_histogram(aes(y = after_stat(density)), binwidth = 0.05, fill = "#606C38", color = "black") +
+  stat_function(fun = theoretical_density, color = "#F77F00", linewidth = 1) +
+  labs(title = "Density of Third Order Statistic from Exponential Distribution",
+       x = "Value",
+       y = "Density") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+#### Fourth Order Statistic
+
+The PDF for the fourth order statistic $X_{(4)}$:
+
+$$
+p_4(x) = 20 (1 - e^{-x})^3 e^{-2x}
+$$
+
+```{r echo=FALSE}
+# Simulate samples from exponential distribution
+set.seed(1)
+n_samples <- 10000
+samples <- matrix(rexp(n_samples * 5), ncol = 5)
+
+# Calculate the fourth order statistic
+fourth_vals <- apply(samples, 1, function(x) sort(x)[4])
+data_fourth <- data.frame(value = fourth_vals)
+
+# Theoretical density
+theoretical_density <- function(x) { 20 * exp(-2 * x) * (1 - exp(-x))^3 }
+
+# Plot
+ggplot(data_fourth, aes(x = value)) +
+  geom_histogram(aes(y = after_stat(density)), binwidth = 0.07, fill = "#BC6C25", color = "black") +
+  stat_function(fun = theoretical_density, color = "#283618", linewidth = 1) +
+  labs(title = "Density of Fourth Order Statistic from Exponential Distribution",
+       x = "Value",
+       y = "Density") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+#### Fifth Order Statistic
+
+The PDF for the maximum order statistic $X_{(5)}$:
+
+$$
+p_5(x) = 5 (1 - e^{-x})^4 e^{-x}
+$$
+
+```{r echo=FALSE}
+# Simulate samples from exponential distribution
+set.seed(1)
+n_samples <- 10000
+samples <- matrix(rexp(n_samples * 5), ncol = 5)
+
+# Calculate the fifth order statistic
+fifth_vals <- apply(samples, 1, function(x) sort(x)[5])
+data_fifth <- data.frame(value = fifth_vals)
+
+# Theoretical density
+theoretical_density <- function(x) { 5 * exp(-x) * (1 - exp(-x))^4 }
+
+# Plot
+ggplot(data_fifth, aes(x = value)) +
+  geom_histogram(aes(y = after_stat(density)), binwidth = 0.12, fill = "#D90429", color = "black") +
+  stat_function(fun = theoretical_density, color = "#2B2D42", linewidth = 1) +
+  labs(title = "Density of Fifth Order Statistic from Exponential Distribution",
+       x = "Value",
+       y = "Density") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+The minimum order statistic from $Exp(1)$ has the highest density near zero and the density decreases rapidly as the value increases, which is characteristic of the exponential distribution. As we move to higher order statistics, the peak of the distribution shifts rightward and the distribution becomes more spread out, indicating a higher variability and a greater likelihood of larger values. The maximum order statistic shows the greatest spread and the peak of the distribution occurs much farther from zero compared to the minimum order statistic.
+
+Overall, the histograms for the order statistics from an exponential distribution exhibit a clear pattern that is consistent with the curve on each plot indicating underlying theoretical distribution.
+
+### Normal Distributions
+
+For the $k^{th}$ order statistic from a normal distribution $N(\mu, \sigma^2)$, the PDF can be approximated by:
+
+$$
+p_k(x) = \frac{n!}{(k - 1)!(n - k)!} \left[\Phi\left(\frac{x - \mu}{\sigma}\right)\right]^{k-1} \left[1 - \Phi\left(\frac{x - \mu}{\sigma}\right)\right]^{n-k} \frac{1}{\sigma} \phi\left(\frac{x - \mu}{\sigma}\right)
+$$
+
+where $\phi$ is the standard normal PDF, and $\Phi$ is the standard normal CDF.
+
+#### Minimum Order Statistic
+
+Here, I choose $\mu=0$ and $\sigma=1$ for better demonstration. So the normal distribution becomes standard normal distribution $N(0,1)$, and the PDF of $k^{th}$ order statistic becomes:
+
+$$
+p_k(x) = \frac{n!}{(k - 1)!(n - k)!} [\Phi(x)]^{k-1} [1 - \Phi(x)]^{n-k} \phi(x)
+$$
+
+The PDF for the minimum order statistic $X_{(1)}$:
+
+$$
+p_1(x) = 5 [1 - \Phi(x)]^{4} \phi(x)
+$$
+
+```{r echo=FALSE}
+# Simulate samples from standard normal distribution
+set.seed(1)
+n_samples <- 10000
+samples <- matrix(rnorm(n_samples * 5), ncol = 5)
+
+# Calculate the minimum order statistic
+min_vals <- apply(samples, 1, min)
+data_min <- data.frame(value = min_vals)
+
+# Theoretical density
+theoretical_density <- function(x) {5 * (1 - pnorm(x))^4 * dnorm(x)}
+
+# Plot
+ggplot(data_min, aes(x = value)) +
+  geom_histogram(aes(y = after_stat(density)), binwidth = 0.07, fill = "#669BBC", color = "black") +
+  stat_function(fun = theoretical_density, color = "#C1121F", linewidth = 1) +
+  labs(title = "Density of Minimum Order Statistic from Standard Normal Distribution",
+       x = "Value",
+       y = "Density") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+#### Second Order Statistic
+
+The PDF for the second order statistic $X_{(2)}$:
+
+$$
+p_2(x) = 20 [\Phi(x)] [1 - \Phi(x)]^{3} \phi(x)
+$$
+
+```{r echo=FALSE}
+# Simulate samples from standard normal distribution
+set.seed(1)
+n_samples <- 10000
+samples <- matrix(rnorm(n_samples * 5), ncol = 5)
+
+# Calculate the second order statistic
+sec_vals <- apply(samples, 1, function(x) sort(x)[2])
+data_sec <- data.frame(value = sec_vals)
+
+# Theoretical density
+theoretical_density <- function(x) {20 * pnorm(x) * (1 - pnorm(x))^3 * dnorm(x)}
+
+# Plot
+ggplot(data_sec, aes(x = value)) +
+  geom_histogram(aes(y = after_stat(density)), binwidth = 0.07, fill = "#FFD60A", color = "black") +
+  stat_function(fun = theoretical_density, color = "#003566", linewidth = 1) +
+  labs(title = "Density of Second Order Statistic from Standard Normal Distribution",
+       x = "Value",
+       y = "Density") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+#### Third Order Statistic
+
+The PDF for the third order statistic $X_{(3)}$:
+
+$$
+p_3(x) = 30 [\Phi(x)]^{2} [1 - \Phi(x)]^{2} \phi(x)
+$$
+
+```{r echo=FALSE}
+# Simulate samples from standard normal distribution
+set.seed(1)
+n_samples <- 10000
+samples <- matrix(rnorm(n_samples * 5), ncol = 5)
+
+# Calculate the third order statistic
+third_vals <- apply(samples, 1, function(x) sort(x)[3])
+data_third <- data.frame(value = third_vals)
+
+# Theoretical density
+theoretical_density <- function(x) {30 * pnorm(x)^2 * (1 - pnorm(x))^2 * dnorm(x)}
+
+# Plot
+ggplot(data_third, aes(x = value)) +
+  geom_histogram(aes(y = after_stat(density)), binwidth = 0.07, fill = "#606C38", color = "black") +
+  stat_function(fun = theoretical_density, color = "#F77F00", linewidth = 1) +
+  labs(title = "Density of Third Order Statistic from Standard Normal Distribution",
+       x = "Value",
+       y = "Density") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+#### Fourth Order Statistic
+
+The PDF for the fourth order statistic $X_{(4)}$:
+
+$$
+p_4(x) = 20 [\Phi(x)]^{3} [1 - \Phi(x)] \phi(x)
+$$
+
+```{r echo=FALSE}
+# Simulate samples from standard normal distribution
+set.seed(1)
+n_samples <- 10000
+samples <- matrix(rnorm(n_samples * 5), ncol = 5)
+
+# Calculate the fourth order statistic
+fourth_vals <- apply(samples, 1, function(x) sort(x)[4])
+data_fourth <- data.frame(value = fourth_vals)
+
+# Theoretical density
+theoretical_density <- function(x) {20 * pnorm(x)^3 * (1 - pnorm(x)) * dnorm(x)}
+
+# Plot
+ggplot(data_fourth, aes(x = value)) +
+  geom_histogram(aes(y = after_stat(density)), binwidth = 0.07, fill = "#BC6C25", color = "black") +
+  stat_function(fun = theoretical_density, color = "#283618", linewidth = 1) +
+  labs(title = "Density of Fourth Order Statistic from Standard Normal Distribution",
+       x = "Value",
+       y = "Density") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+#### Fifth Order Statistic
+
+The PDF for the maximum order statistic $X_{(5)}$:
+
+$$
+p_5(x) = 5 [\Phi(x)]^{4} \phi(x)
+$$
+
+```{r echo=FALSE}
+# Simulate samples from standard normal distribution
+set.seed(1)
+n_samples <- 10000
+samples <- matrix(rnorm(n_samples * 5), ncol = 5)
+
+# Calculate the fifth order statistic
+fifth_vals <- apply(samples, 1, function(x) sort(x)[5])
+data_fifth <- data.frame(value = fifth_vals)
+
+# Theoretical density
+theoretical_density <- function(x) {5 * pnorm(x)^4 * dnorm(x)}
+
+# Plot
+ggplot(data_fifth, aes(x = value)) +
+  geom_histogram(aes(y = after_stat(density)), binwidth = 0.07, fill = "#D90429", color = "black") +
+  stat_function(fun = theoretical_density, color = "#2B2D42", linewidth = 1) +
+  labs(title = "Density of Fifth Order Statistic from Standard Normal Distribution",
+       x = "Value",
+       y = "Density") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5))
 ```
