@@ -884,7 +884,7 @@ $$
 For calculating standard deviation of rotation speed:
 
 $$
-sd = \sqrt{\frac{1}{n-1}\sum_{i=1}^{n}(v_i - \bar{v})^2}
+Standard \, Deviation = \sqrt{\frac{1}{n-1}\sum_{i=1}^{n}(v_i - \bar{v})^2}
 $$
 
 ```{r echo=FALSE}
@@ -902,8 +902,10 @@ cat("Standard Deviation of Speed: ", std_speed, "feet per hour\n")
 
 ## Calculate t-distribution
 
+Then let me calculate the $t \_ score$ to determine how far the confidence interval should extend around the mean:
+
 $$
-t_{\alpha/2, \, n-1} = \text{QT}\left(\frac{1 + \text{confidence level}}{2}, \, n-1\right)
+t_{\alpha/2, \, n-1} = QT\left(\frac{1 + confidence \: level}{2}, \, n-1\right)
 $$
 
 ```{r echo=FALSE}
@@ -912,19 +914,30 @@ n <- length(speed)
 
 # Calculate the t-score for a 90% confidence interval
 t_score <- qt((1 + 0.90) / 2, df=n-1)
+cat("t-score For a 90% Confidence Interval: ", t_score)
 ```
 
 ## Calculate 90% Confidence Interval
 
-```{r}
-# Calculate margin of error
-margin_of_error <- t_score * (std_speed / sqrt(n))
+Finally, using the following formula, I derive the 90% confidence interval for the speed of the rotating arm at the outer wheels:
+
+$$
+Standard \, Error = \frac{Standard \: Deviation}{\sqrt{n}} = \sqrt{\frac{1}{n(n-1)}\sum_{i=1}^{n}(v_i - \bar{v})^2}
+$$
+
+$$
+90\% \: Confidence \: Interval = [\bar{v} - t \_ score \cdot Standard \: Error, \bar{v} + t \_ score \cdot Standard \: Error]
+$$
+
+Therefore,
+
+```{r echo=FALSE}
+# Calculate standard error
+se <- std_speed / sqrt(n)
 
 # Calculate the 90% confidence interval for speed
-ci_lower_speed <- mean_speed - margin_of_error
-ci_upper_speed <- mean_speed + margin_of_error
+ci_lower_speed <- mean_speed - t_score * se
+ci_upper_speed <- mean_speed + t_score * se
 
-# Output the results
-cat("Average Speed: ", mean_speed, "feet per hour\n")
 cat("90% Confidence Interval: [", ci_lower_speed, ",", ci_upper_speed, "] feet per hour\n")
 ```
