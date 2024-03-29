@@ -8,6 +8,7 @@ output: pdf_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
+library(dplyr)
 ```
 
 # 1. Order Statistics
@@ -809,3 +810,121 @@ $$
 $$
 
 # 3. Irrigation — Those Green Circles
+
+Read data:
+
+```{r echo=FALSE}
+rotation_time <- read.csv("rot35.txt", header = FALSE)
+head(rotation_time)
+glimpse(rotation_time)
+```
+
+```{r echo=FALSE}
+# Create a list where each element is a vector of numbers
+split_data <- strsplit(as.character(rotation_time$V1), " ")
+# Convert the list into a numeric vector
+rotation_time <- as.numeric(unlist(split_data))
+```
+
+To calculate a 90% confidence interval for the speed of the rotating arm at the outer wheels, we should perform the following steps:
+
+1.  Convert rotation time to rotation speed.
+
+2.  Calculate the mean and the standard deviation of the rotation speed.
+
+3.  Use t-distribution to find the appropriate multiplier for the 90% confidence level.
+
+4.  Calculate the 90% confidence interval for the rotation speed.
+
+Let me do it step-by-step.
+
+## Convert Rotation Time to Rotation Speed
+
+Rotation speed $v$ is inversely proportional to rotation time $t$. Given the circumference of the path traced by the outer wheels, we can calculate the speed:
+
+$$
+v = \frac{distance}{time}
+$$
+
+The distance is the circumference of the circle with a radius that includes the length of the arm and the extension of the end-gun, which is $1320+100=1420$ feet. Therefore,
+
+$$
+distance = 2 \cdot \pi \cdot radius = 2 \cdot \pi \cdot 1420 = 2840 \cdot \pi
+$$
+
+The rotation speed is:
+
+$$
+v = \frac{distance}{time} = \frac{2840 \cdot \pi}{time}
+$$
+
+```{r echo=FALSE}
+# Circumference distance
+radius <- 1320 + 100
+circumference <- 2 * pi * radius
+
+# Calculate speed for each rotation time
+speed <- circumference / rotation_time
+```
+
+By calculation, I can derive the speed of the rotating arm at the outer wheels:
+
+```{r echo=FALSE}
+cat("Rotation Speed (feet per hour): \n", speed)
+```
+
+## Calculate Mean and Standard Deviation
+
+For calculating mean of rotation speed:
+
+$$
+\bar{v} = \frac{1}{n}\sum_{i=1}^{n}v_i
+$$
+
+For calculating standard deviation of rotation speed:
+
+$$
+sd = \sqrt{\frac{1}{n-1}\sum_{i=1}^{n}(v_i - \bar{v})^2}
+$$
+
+```{r echo=FALSE}
+# Calculate mean and standard deviation of speed
+mean_speed <- mean(speed)
+std_speed <- sd(speed)
+```
+
+By calculation, I can derive the mean and standard deviation of rotation speed:
+
+```{r echo=FALSE}
+cat("Average Speed: ", mean_speed, "feet per hour\n")
+cat("Standard Deviation of Speed: ", std_speed, "feet per hour\n")
+```
+
+## Calculate t-distribution
+
+$$
+t_{\alpha/2, \, n-1} = \text{QT}\left(\frac{1 + \text{confidence level}}{2}, \, n-1\right)
+$$
+
+```{r echo=FALSE}
+# Sample size
+n <- length(speed)
+
+# Calculate the t-score for a 90% confidence interval
+t_score <- qt((1 + 0.90) / 2, df=n-1)
+```
+
+## Calculate 90% Confidence Interval
+
+```{r}
+# Calculate margin of error
+margin_of_error <- t_score * (std_speed / sqrt(n))
+
+# Calculate the 90% confidence interval for speed
+ci_lower_speed <- mean_speed - margin_of_error
+ci_upper_speed <- mean_speed + margin_of_error
+
+# Output the results
+cat("Average Speed: ", mean_speed, "feet per hour\n")
+cat("90% Confidence Interval: [", ci_lower_speed, ",", ci_upper_speed, "] feet per hour\n")
+```
