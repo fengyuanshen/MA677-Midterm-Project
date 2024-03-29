@@ -943,7 +943,7 @@ ci_upper_speed <- mean_speed + t_score * se
 cat("90% Confidence Interval: [", ci_lower_speed, ",", ci_upper_speed, "] feet per hour\n")
 ```
 
-## Explanation for Data scientists and Farmers
+## Explanation for Data Scientists and Farmers
 
 A center pivot irrigation system is a marvel of modern agriculture, allowing for efficient watering of crops over large areas. To understand how quickly it moves, I analyzed the rotation speed of one such system, discovering that on average, it completes a rotation in about **22.83618** hours. Given the size of the circle it covers, this translates to an average speed of **391.7855** feet per hour for the outer edge of the system.
 
