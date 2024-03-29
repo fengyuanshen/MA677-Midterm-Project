@@ -84,7 +84,7 @@ $$
 p_1(x) = 5 (1 - x)^{4}
 $$
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.width=8, fig.height=4}
 # Simulate samples from uniform distribution
 set.seed(1)
 n_samples <- 10000
@@ -113,7 +113,7 @@ $$
 p_2(x) = 20 x (1 - x)^{3}
 $$
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.width=8, fig.height=4}
 # Simulate samples from uniform distribution
 set.seed(1)
 n_samples <- 10000
@@ -142,7 +142,7 @@ $$
 p_3(x) = 30 x^2 (1 - x)^{2}
 $$
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.width=8, fig.height=4}
 # Simulate samples from uniform distribution
 set.seed(1)
 n_samples <- 10000
@@ -171,7 +171,7 @@ $$
 p_4(x) = 20 x^3 (1 - x)
 $$
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.width=8, fig.height=4}
 # Simulate samples from uniform distribution
 set.seed(1)
 n_samples <- 10000
@@ -200,7 +200,7 @@ $$
 p_5(x) = 5 x^{4}
 $$
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.width=8, fig.height=4}
 # Simulate samples from uniform distribution
 set.seed(1)
 n_samples <- 10000
@@ -253,7 +253,7 @@ $$
 p_1(x) = 5 e^{-5x}
 $$
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.width=8, fig.height=4}
 # Simulate samples from exponential distribution
 set.seed(1)
 n_samples <- 10000
@@ -285,7 +285,7 @@ $$
 p_2(x) = 20 (1 - e^{-x}) e^{-4x}
 $$
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.width=8, fig.height=4}
 # Simulate samples from exponential distribution
 set.seed(1)
 n_samples <- 10000
@@ -317,7 +317,7 @@ $$
 p_3(x) = 30 (1 - e^{-x})^2 e^{-3x}
 $$
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.width=8, fig.height=4}
 # Simulate samples from exponential distribution
 set.seed(1)
 n_samples <- 10000
@@ -349,7 +349,7 @@ $$
 p_4(x) = 20 (1 - e^{-x})^3 e^{-2x}
 $$
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.width=8, fig.height=4}
 # Simulate samples from exponential distribution
 set.seed(1)
 n_samples <- 10000
@@ -381,7 +381,7 @@ $$
 p_5(x) = 5 (1 - e^{-x})^4 e^{-x}
 $$
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.width=8, fig.height=4}
 # Simulate samples from exponential distribution
 set.seed(1)
 n_samples <- 10000
@@ -433,7 +433,7 @@ $$
 p_1(x) = 5 [1 - \Phi(x)]^{4} \phi(x)
 $$
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.width=8, fig.height=4}
 # Simulate samples from standard normal distribution
 set.seed(1)
 n_samples <- 10000
@@ -465,7 +465,7 @@ $$
 p_2(x) = 20 [\Phi(x)] [1 - \Phi(x)]^{3} \phi(x)
 $$
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.width=8, fig.height=4}
 # Simulate samples from standard normal distribution
 set.seed(1)
 n_samples <- 10000
@@ -497,7 +497,7 @@ $$
 p_3(x) = 30 [\Phi(x)]^{2} [1 - \Phi(x)]^{2} \phi(x)
 $$
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.width=8, fig.height=4}
 # Simulate samples from standard normal distribution
 set.seed(1)
 n_samples <- 10000
@@ -529,7 +529,7 @@ $$
 p_4(x) = 20 [\Phi(x)]^{3} [1 - \Phi(x)] \phi(x)
 $$
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.width=8, fig.height=4}
 # Simulate samples from standard normal distribution
 set.seed(1)
 n_samples <- 10000
@@ -561,7 +561,7 @@ $$
 p_5(x) = 5 [\Phi(x)]^{4} \phi(x)
 $$
 
-```{r echo=FALSE}
+```{r echo=FALSE, fig.width=8, fig.height=4}
 # Simulate samples from standard normal distribution
 set.seed(1)
 n_samples <- 10000
@@ -809,7 +809,7 @@ $$
 \sum_{i=1}^k Exp(\lambda) = Exp(\lambda) + Exp(\lambda) + ... + Exp(\lambda) = Gamma(k,\lambda)
 $$
 
-# 3. Irrigation — Those Green Circles
+# 3. Irrigation - Those Green Circles
 
 Read data:
 
@@ -896,6 +896,7 @@ std_speed <- sd(speed)
 By calculation, I can derive the mean and standard deviation of rotation speed:
 
 ```{r echo=FALSE}
+cat("Average Rotation Time: ", mean(rotation_time), "hours\n")
 cat("Average Speed: ", mean_speed, "feet per hour\n")
 cat("Standard Deviation of Speed: ", std_speed, "feet per hour\n")
 ```
@@ -941,3 +942,9 @@ ci_upper_speed <- mean_speed + t_score * se
 
 cat("90% Confidence Interval: [", ci_lower_speed, ",", ci_upper_speed, "] feet per hour\n")
 ```
+
+## Explanation for Data scientists and Farmers
+
+A center pivot irrigation system is a marvel of modern agriculture, allowing for efficient watering of crops over large areas. To understand how quickly it moves, I analyzed the rotation speed of one such system, discovering that on average, it completes a rotation in about **22.83618** hours. Given the size of the circle it covers, this translates to an average speed of **391.7855** feet per hour for the outer edge of the system.
+
+Understanding the system's speed helps in planning and optimizing water and chemical application, ensuring crops receive the right amount of resources at the right time. For my analysis, I am not only interested in the average speed but also in the range within which the true average speed likely falls. I calculated a 90% confidence interval, which means I am 90% confident that the true average speed lies between **385.8461** and **397.725** feet per hour. This range is helpful for making informed decisions about irrigation schedules and system maintenance, ensuring that the system operates efficiently and effectively.
